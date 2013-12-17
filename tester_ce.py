@@ -78,9 +78,7 @@ except KeyError:
 result["cvmfs"] = {}
 for test_dir in ["oasis.opensciencegrid.org", "atlas.cern.ch", "atlas-condb.cern.ch", "lhcb.cern.ch", "cms.cern.ch"]:
     if os.path.isdir("/cvmfs/"+test_dir):
-        result["cvmfs"][test_dir] = True
-    else:
-        result["cvmfs"][test_dir] = False
+        result["cvmfs"].append(test_dir)
 
 def which(program):
     import os
@@ -102,27 +100,28 @@ def which(program):
 
 
 #get list of apps installed (under osg for now...)
-result["apps"] = {}
-result["apps"]["gcc"] = which("gcc")
-result["apps"]["python"] = which("python")
+#result["apps"] = {}
+#result["apps"]["gcc"] = which("gcc")
+#result["apps"]["python"] = which("python")
 
-path=envs["OSG_APP"]+"/"+result["username"]+"/python-2.7.5/bin/python"
-if os.path.exists(path) and os.path.getsize(path) > 0: 
-    result["apps"]["python-2.7.5"] = path
-else:
-    result["apps"]["python-2.7.5"] = None
+#path=envs["OSG_APP"]+"/"+result["username"]+"/python-2.7.5/bin/python"
+#if os.path.exists(path) and os.path.getsize(path) > 0: 
+#    result["apps"]["python-2.7.5"] = path
+#else:
+#    result["apps"]["python-2.7.5"] = None
 
-path=envs["OSG_APP"]+"/"+result["username"]+"/ncbi-blast-2.2.28+/bin"
-if os.path.exists(path) and os.path.getsize(path) > 0:
-    result["apps"]["ncbi-blast-2.2.28+"] = path
-else:
-    result["apps"]["ncbi-blast-2.2.28+"] = None
+#
+#path=envs["OSG_APP"]+"/"+result["username"]+"/ncbi-blast-2.2.28+/bin"
+#if os.path.exists(path) and os.path.getsize(path) > 0:
+#    result["apps"]["ncbi-blast-2_2_28+"] = path
+#else:
+#    result["apps"]["ncbi-blast-2_2_28+"] = None
 
-path=envs["OSG_APP"]+"/"+result["username"]+"/blender-2.67b-linux-glibc211-x86_64"
-if os.path.exists(path) and os.path.getsize(path) > 0:
-    result["apps"]["blender-2.67b"] = path
-else:
-    result["apps"]["blender-2.67b"] = None
+#path=envs["OSG_APP"]+"/"+result["username"]+"/blender-2.67b-linux-glibc211-x86_64"
+#if os.path.exists(path) and os.path.getsize(path) > 0:
+#    result["apps"]["blender-2.67b"] = path
+#else:
+#    result["apps"]["blender-2.67b"] = None
 
 #test for data
 result["data"] = {}

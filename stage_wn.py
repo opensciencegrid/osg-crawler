@@ -4,6 +4,10 @@ import os
 import urllib
 import simplejson
 
+import pymongo
+client = pymongo.MongoClient()
+db = client.osg
+
 print "universe = grid"
 print "notification = never"
 print "executable = tester_wn.py"
@@ -13,18 +17,22 @@ print "log = tester_wn.log"
 print
 
 #load cluster info
-url="http://soichi6.grid.iu.edu/home/index/osgcrawl"
-f = urllib.urlopen(url+"?vo=osg")
-json = f.read()
-siteinfo = simplejson.loads(json)
-for name, info in siteinfo["sites"].items():
+#url="http://soichi6.grid.iu.edu/home/osg/crawl"
+#f = urllib.urlopen(url+"?vo=osg")
+#json = f.read()
+#siteinfo = simplejson.loads(json)
+#for name, info in siteinfo["sites"].items():
+
+for ce in db.ce.find():
+    name = ce["name"]
+    fqdn = ce["fqdn"]
     print "#",name
     try:
-        jobcontact = info["ce"]["env"]["OSG_JOB_CONTACT"]
+        jobcontact = ce["ce"]["env"]["OSG_JOB_CONTACT"]
         print "output = /tmp/osgcrawl.osg.wn."+name+".out"
         print "error = /tmp/osgcrawl.osg.wn."+name+".err"
         print "grid_resource = gt2 "+jobcontact
-        print "arguments = "+name
+        print "arguments = "+fqdn+" "+jobcontact
         print "queue"
     except:
         print "#no ce info"

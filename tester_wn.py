@@ -5,6 +5,7 @@ import subprocess
 import platform
 import getpass
 import time
+import sys
 
 #execute by doing
 #globus-job-run ce.grid.iu.edu/jobmanger-condor -stdin -s tester_wn.py /usr/bin/python
@@ -14,6 +15,9 @@ result = {}
 #only on 2.6
 #import multiprocessing
 #result["cpu_count"] = multiprocessing.cpu_count()
+
+result["_fqdn"] = sys.argv[1]
+result["_jobcontact"] = sys.argv[2]
 
 result["platform"] = {}
 (system, node, release, version, machine, processor) = platform.uname()
@@ -76,46 +80,44 @@ result["MemFree"] = meminfo["MemFree"]
 result["cvmfs"] = {}
 for test_dir in ["oasis.opensciencegrid.org", "atlas.cern.ch", "atlas-condb.cern.ch", "lhcb.cern.ch", "cms.cern.ch"]:
     if os.path.isdir("/cvmfs/"+test_dir):
-        result["cvmfs"][test_dir] = True
-    else:
-        result["cvmfs"][test_dir] = False
+        result["cvmfs"].append(test_dir)
 
 #get list of apps installed (under osg for now...)
-result["apps"] = {}
+#result["apps"] = {}
 
-path=envs["OSG_APP"]+"/"+result["username"]+"/python-2.7.5/bin/python"
-if os.path.exists(path) and os.path.getsize(path) > 0: 
-    result["apps"]["python-2.7.5"] = path
+#path=envs["OSG_APP"]+"/"+result["username"]+"/python-2.7.5/bin/python"
+#if os.path.exists(path) and os.path.getsize(path) > 0: 
+#    result["apps"]["python-2.7.5"] = path
+#
+#    #test modules
+#    env = {"PYTHONPATH": envs["OSG_APP"]+"/"+result["username"]+"/python-modules/pika-0.9.13",
+#            "LD_LIBRARY_PATH": os.environ["LD_LIBRARY_PATH"]+":"+envs["OSG_APP"]+"/"+result["username"]+"/python-modules/glibc_"+result["glibc_version"]+"/openssl"}
+#    #print env
+#    result["apps"]["python-modules"] = {}
+#    p = subprocess.Popen(path+" -c 'import pika'", shell=True, 
+#        env=env, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, preexec_fn=os.setsid)
+#    retval = p.wait()
+#    if retval == 0:
+#        result["apps"]["python-modules"]["pika"] = True
+#    else:
+#        result["apps"]["python-modules"]["pika"] = False
+#        result["apps"]["python-modules"]["pika_stderr"] = p.stdout.read()
+#
+#else:
+#    result["apps"]["python-2.7.5"] = None
 
-    #test modules
-    env = {"PYTHONPATH": envs["OSG_APP"]+"/"+result["username"]+"/python-modules/pika-0.9.13",
-            "LD_LIBRARY_PATH": os.environ["LD_LIBRARY_PATH"]+":"+envs["OSG_APP"]+"/"+result["username"]+"/python-modules/glibc_"+result["glibc_version"]+"/openssl"}
-    #print env
-    result["apps"]["python-modules"] = {}
-    p = subprocess.Popen(path+" -c 'import pika'", shell=True, 
-        env=env, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, preexec_fn=os.setsid)
-    retval = p.wait()
-    if retval == 0:
-        result["apps"]["python-modules"]["pika"] = True
-    else:
-        result["apps"]["python-modules"]["pika"] = False
-        result["apps"]["python-modules"]["pika_stderr"] = p.stdout.read()
+#path=envs["OSG_APP"]+"/"+result["username"]+"/ncbi-blast-2.2.28+/bin"
+#if os.path.exists(path) and os.path.getsize(path) > 0:
+#    result["apps"]["ncbi-blast-2.2.28+"] = path
+#else:
+#    result["apps"]["ncbi-blast-2.2.28+"] = None
 
-else:
-    result["apps"]["python-2.7.5"] = None
-
-path=envs["OSG_APP"]+"/"+result["username"]+"/ncbi-blast-2.2.28+/bin"
-if os.path.exists(path) and os.path.getsize(path) > 0:
-    result["apps"]["ncbi-blast-2.2.28+"] = path
-else:
-    result["apps"]["ncbi-blast-2.2.28+"] = None
-
-path=envs["OSG_APP"]+"/"+result["username"]+"/blender-2.67b-linux-glibc211-x86_64"
-if os.path.exists(path) and os.path.getsize(path) > 0:
-    result["apps"]["blender-2.67b"] = path
-else:
-    result["apps"]["blender-2.67b"] = None
-
+#path=envs["OSG_APP"]+"/"+result["username"]+"/blender-2.67b-linux-glibc211-x86_64"
+#if os.path.exists(path) and os.path.getsize(path) > 0:
+#    result["apps"]["blender-2.67b"] = path
+#else:
+#    result["apps"]["blender-2.67b"] = None
+#
 
 #test for data
 result["data"] = {}
