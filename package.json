@@ -1,0 +1,28 @@
+{
+    "name": "osg-crawler",
+    "version": "0.0.1",
+    "description": "OSG crawler for various OSG services",
+    "main": "myosg.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/soichih/osg-crawler"
+    },
+    "keywords": [
+        "condor",
+        "osg"
+    ],
+    "author": "Soichi Hayashi",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/soichih/osg-crawler/issues"
+    },
+    "dependencies": {
+        "async": "*",
+        "ldapjs": "*",
+        "mkdirp": "*",
+        "osg": "*"
+    }
+}

@@ -1,0 +1,5 @@
+barn
+*.log
+cert/*.pem
+cert/*.csr
+node_modules
