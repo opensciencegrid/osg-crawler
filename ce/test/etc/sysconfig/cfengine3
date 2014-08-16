@@ -1,0 +1,9 @@
+# /etc/sysconfig/cfengine3
+
+# For use with cfengine-community rpm, only want cf-serverd run as
+# service
+
+RUN_CF_SERVERD=1
+RUN_CF_EXECD=1
+RUN_CF_MONITORD=0
+RUN_CF_HUB=0

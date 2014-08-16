@@ -1,0 +1,80 @@
+#User-VO map
+# #comment line, format of each regular line line: account VO
+# Next 2 lines with VO names, same order, all lowercase, with case (lines starting with #voi, #VOc)
+#voi cdf fermilab mis star uscms uscms uscms uscms uscms uscms uscms uscms ligo dzero dzero dosar des glow nanohub geant4 i2u2 osg osgedu minos usminos ukminos minos nwicg ops miniboone des compbiogrid engage ilc nysgrid sbgrid SGVO usatlas usatlas usatlas usatlas usatlas usatlas usatlas usatlas hcc SGVO uc3
+#VOc CDF FERMILAB MIS STAR CMS CMS CMS CMS CMS CMS CMS CMS LIGO DZERO DZERO DOSAR DES GLOW NANOHUB GEANT4 I2U2 OSG OSGEDU FERMILAB FERMILAB FERMILAB FERMILAB nwicg OPS FERMILAB DES CompBioGrid Engage ILC NYSGRID SBGrid SGVO atlas ATLAS ATLAS ATLAS ATLAS ATLAS ATLAS ATLAS hcc SGVO UC3
+#---- accounts for vo: cdf ----#
+cdf cdf
+#---- accounts for vo: fermilab ----#
+fermilab fermilab
+#---- accounts for vo: mis ----#
+mis mis
+#---- accounts for vo: star ----#
+star star
+#---- accounts for vo: uscmsuser ----#
+#---- accounts for vo: cmsuser ----#
+#---- accounts for vo: cmst2admin ----#
+#---- accounts for vo: cmssoft ----#
+#---- accounts for vo: cmsprod ----#
+#---- accounts for vo: cmsphedex ----#
+#---- accounts for vo: cmsfrontier ----#
+#---- accounts for vo: cmsuser-null ----#
+#---- accounts for vo: LIGO ----#
+ligo ligo
+#---- accounts for vo: dzerouser ----#
+samgrid dzero
+#---- accounts for vo: dzeroana ----#
+dzeroana dzero
+#---- accounts for vo: dosar-admin ----#
+dosar dosar
+#---- accounts for vo: des ----#
+des des
+#---- accounts for vo: glow ----#
+glow glow
+#---- accounts for vo: grow ----#
+#---- accounts for vo: nanohub ----#
+nanohub nanohub
+#---- accounts for vo: geant4 ----#
+geant4 geant4
+#---- accounts for vo: i2u2 ----#
+i2u2 i2u2
+#---- accounts for vo: osg ----#
+osg osg
+#---- accounts for vo: osgedu ----#
+osgedu osgedu
+#---- accounts for vo: minos ----#
+#---- accounts for vo: usminos ----#
+#---- accounts for vo: ukminos ----#
+#---- accounts for vo: minossoft ----#
+#---- accounts for vo: nwicg ----#
+#---- accounts for vo: ops ----#
+ops ops
+#---- accounts for vo: miniboone ----#
+#---- accounts for vo: des ----#
+#---- accounts for vo: compbiogrid ----#
+#---- accounts for vo: engage ----#
+engage engage
+#---- accounts for vo: ilc ----#
+#---- accounts for vo: nysgrid ----#
+#---- accounts for vo: sbgrid ----#
+sbgrid sbgrid
+#---- accounts for vo: Suragrid ----#
+suragrid SGVO
+#---- accounts for vo: MyUSATLAS3DNs ----#
+usatlas3 usatlas
+#---- accounts for vo: newUsatlasSoft ----#
+usatlas2 usatlas
+#---- accounts for vo: Group-usatlas2 ----#
+#---- accounts for vo: newUsatlasProd ----#
+usatlas1 usatlas
+#---- accounts for vo: newAtlasProd ----#
+#---- accounts for vo: Group-usatlas1 ----#
+#---- accounts for vo: newusatlas ----#
+#---- accounts for vo: newatlas ----#
+usatlas4 usatlas
+#---- accounts for vo: hcc ----#
+hcc hcc
+#---- accounts for vo: SURAgridVOMS ----#
+#---- accounts for vo: uc3 ----#
+uc3 uc3
+

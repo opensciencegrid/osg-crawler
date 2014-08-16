@@ -1,0 +1,4 @@
+COBBLER_SERVER="10.10.2.85"
+COBBLER_PORT="80"
+COBBLER_NAME="gate02"
+LOGFILES="/var/log/boot.log /var/log/messages /var/log/dmesg"

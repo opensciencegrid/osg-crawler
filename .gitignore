@@ -3,3 +3,4 @@ barn
 cert/*.pem
 cert/*.csr
 node_modules
+config.json

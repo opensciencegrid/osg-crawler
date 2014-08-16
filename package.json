@@ -23,6 +23,7 @@
         "async": "*",
         "ldapjs": "*",
         "mkdirp": "*",
+        "perfsonar": "*",
         "osg": "*"
     }
 }

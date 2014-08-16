@@ -28,19 +28,28 @@ This script walk the directory structure provides in step 1 and download current
 
 Step 3. Setup cron
 
-#run daily
-15 0 * * * crawler node /usr/local/osg-crawler/myosg.js
-15 1 * * * crawler node /usr/local/osg-crawler/bdii.js
-15 2 * * * crawler (todo - script to remove old directories)
+#set this to wherever you've installed your crawler
+OSG_CRAWLER_HOME=/usr/local/osg-crawler
 
-#commit to git weekly
-20 0 * * 0 crawler /usr/local/osg-crawler/commit.sh
+#init proxy -- change "mis" to whichever the VO your certificate is registered
+0 0 * * * voms-proxy-init -voms mis -cert $OSG_CRAWLER_HOME/cert/crawlercert.pem -key $OSG_CRAWLER_HOME/cert/crawlerkey.pem >> $OSG_CRAWLER_LOG
+
+#run tests
+15 0 * * * /usr/local/node-v0.10.24-linux-x64/bin/node $OSG_CRAWLER_HOME/myosg.js >> $OSG_CRAWLER_LOG
+20 0 * * * /usr/local/node-v0.10.24-linux-x64/bin/node $OSG_CRAWLER_HOME/bdii.js >> $OSG_CRRAWLER_LOG
+25 0 * * * /usr/local/node-v0.10.24-linux-x64/bin/node $OSG_CRAWLER_HOME/ce_env.js >> $OSG_CRAWLER_LOG
+
+15 2 * * * (todo - script to remove old directories)
+
+#commit changed to git periodically
+20 5 * * 0 $OSG_CRAWLER_HOME/commit.sh >> $OSG_CRAWLER_LOG
 
 Step 4. Install gitweb
 
-gitweb allows you to browse your git repository
+gitweb allows you to browse your git repository via web browser. If you want this, just install gitweb
 
 $ yum intall gitweb
+
 
 
 

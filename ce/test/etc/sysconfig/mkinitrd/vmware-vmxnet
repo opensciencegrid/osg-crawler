@@ -1,0 +1,4 @@
+# Created by VMware.
+
+MODULES="$MODULES vmxnet"
+

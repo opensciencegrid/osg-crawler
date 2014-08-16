@@ -1,10 +1,10 @@
 This directory contains certificate used to crawl OSG sites.
 
-
 Create CSR by running something like
 > umask 077; openssl req -new -newkey rsa:2048 -nodes -keyout crawlerkey.pem -subj "/CN=crawler\/monitor.grid.iu.edu"
 
 Then OSG/PKI interface to make a service certificate request
 > https://oim.grid.iu.edu/oim/certificaterequesthost
-
 > cert/*.pem are in .gitignore list
+
+You also need to register your certificate in VOMS under whichever the VO you want you run your test. GOC runs this under MIS VO, for example.

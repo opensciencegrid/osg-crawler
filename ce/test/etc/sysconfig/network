@@ -1,0 +1,3 @@
+NETWORKING=yes
+GATEWAY=141.211.43.97
+HOSTNAME=gate02.grid.umich.edu

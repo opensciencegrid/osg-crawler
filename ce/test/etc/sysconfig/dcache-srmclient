@@ -1,0 +1,2 @@
+export SRM_PATH=/usr/share/srm
+export SRM_CONFIG=/etc/dcache-srmclient-config.xml

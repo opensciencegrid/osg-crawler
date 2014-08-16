@@ -7,7 +7,7 @@ var myosg = require('osg').MyOSG;
 
 //console.dir(config);
 
-myosg.rgsummary({services: ["CE"]}).
+myosg.rgsummary(). //pull all services
 then(function(groups) {
     groups.forEach(function(group) {
         //console.log(group.GroupName[0] + "--------------------------");

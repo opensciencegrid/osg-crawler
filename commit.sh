@@ -1,6 +1,7 @@
 #!/bin/bash
 
-DATADIR=`./config.js datadir`
+#TODO - load the location from config.json somehow
+DATADIR=/usr/local/crawler_data
 
 echo $DATADIR
 

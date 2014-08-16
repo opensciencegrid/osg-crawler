@@ -35,9 +35,9 @@ function get_directory(path, callback, done) {
 
 //iterate resource / services
 get_directory(config.datadir, function(err, gridtype, next_gridtype) {
-    console.log("Grid Type:"+gridtype);
+    //console.log("Grid Type:"+gridtype);
     get_directory(config.datadir+"/"+gridtype, function(err, group, next_group) {
-        console.log("Resource Group:"+group);
+        //console.log("Resource Group:"+group);
 
         var rg_path = config.datadir+"/"+gridtype+"/"+group;
         load_bdii(rg_path, group, next_group);
@@ -58,7 +58,7 @@ get_directory(config.datadir, function(err, gridtype, next_gridtype) {
     }, next_gridtype);
 }, function() {
     client.unbind();
-    console.log("all done");
+    //console.log("all done");
     fs.writeFile(config.datadir+"/bdii.errors.json", JSON.stringify(errors, null, 4));
 });
 
@@ -78,7 +78,7 @@ function load_bdii(resource_path, sitename, next) {
         scope: 'sub'
     };
 
-    //console.log(sitename);
+    console.log(resource_path);
     var entries = [];
     client.search("mds-vo-name="+sitename+",mds-vo-name=local,o=grid", opts, function(err, res) {
         if(err) {
@@ -93,12 +93,13 @@ function load_bdii(resource_path, sitename, next) {
                 console.log('referral: ' + referral.uris.join());
             });
             res.on('error', function(err) {
+                console.log(err.message);
                 errors.push({sitename: sitename, msg:err.message});
                 //fs.writeFile(resource_path+"/bdii.json", JSON.stringify(entries, null, 4));
                 next();
             });
             res.on('end', function(result) {
-                console.log('DEBUG '+sitename+' :: ' + entries.length + ' entries');
+                //console.log('DEBUG '+sitename+' :: ' + entries.length + ' entries');
                 fs.writeFile(resource_path+"/bdii.json", JSON.stringify(entries, null, 4), next());
                 //store_bdii_entries(resource_path, entries, next);
             });
