@@ -11,6 +11,12 @@ var async = require("async");
 //list of errors
 var errors = [];
 
+//kill process after certain amount of time
+setTimeout(function() {
+    console.error("Timeout reached.. exiting");
+    process.exit(1);
+}, config.timeout_hours*3600*1000);
+
 function get_directory(path, callback, done) {
     fs.readdir(path, function (err, items) {
         async.eachSeries(items, function(item, next) {
