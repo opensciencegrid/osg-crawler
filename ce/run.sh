@@ -25,6 +25,9 @@ echo "running loadconfig.sh"
 echo "globus-job-run $OSG_HOSTNAME -s loadconfig.sh | tar -xz -C $SERVICE_PATH"
 globus-job-run $OSG_HOSTNAME -s loadconfig.sh | tar -xz -C $SERVICE_PATH
 
+echo "running ce.sh"
+globus-job-run $OSG_HOSTNAME -s ce.sh
+
 echo "checking to see if this is condor cluster"
 echo "globus-job-run $OSG_HOSTNAME /usr/bin/condor_version"
 globus-job-run $OSG_HOSTNAME /usr/bin/condor_version

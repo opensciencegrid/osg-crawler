@@ -155,7 +155,7 @@ function process_ce(sitename, fqdn, service_path, next_service) {
             });
             */
             var run = spawn(__dirname+'/ce/run.sh', [], {
-                //timeout: 1000*60, //1 minutes enough?
+                timeout: 1000*60, //1 minutes enough?
                 cwd: __dirname+"/ce",
                 env: {
                     X509_USER_PROXY: "../"+config.proxy,
@@ -201,6 +201,7 @@ function process_gridftp(sitename, fqdn, service_path, next_service) {
         fqdn += ":2811";
     }
     var run = spawn(__dirname+'/gridftp/run.sh', [], {
+        timeout: 1000*60, //1 minutes enough?
         cwd: __dirname+"/gridftp",
         env: {
             X509_USER_PROXY: "../"+config.proxy,
@@ -237,6 +238,7 @@ function process_srmv2(sitename, fqdn, service_path, next_service) {
         fqdn += ":8443";
     }
     var run = spawn(__dirname+'/srmv2/run.sh', [], {
+        timeout: 1000*60, //1 minutes enough?
         cwd: __dirname+"/srmv2",
         env: {
             //X509_USER_PROXY: "../"+config.proxy,
@@ -267,6 +269,7 @@ function process_perf(type, sitename, fqdn, service_path, next_service) {
     }
 
     var run = spawn(__dirname+'/perfsonar/test.js', [], {
+        timeout: 1000*60, //1 minutes enough?
         cwd: __dirname+"/perfsonar",
         env: {
             SERVICE_PATH: service_path, //location where user should write output to
