@@ -2,7 +2,7 @@
 
 var config = require('./config.json');
 var fs = require("fs");
-var exec = require('child_process').exec;
+var child_process = require('child_process');
 var assert = require('assert');
 
 var async = require("async");
@@ -69,23 +69,30 @@ function process_ce(sitename, fqdn, service_path, next_service) {
     }
 
     //now submit env test
-    var cmd = "globus-job-run "+fqdn+" -m 1 /bin/env";
-    console.log(service_path+" "+cmd);
-    exec(cmd, {
+    var cmd = "globus-job-run "+fqdn+" /bin/env";
+    console.log(cmd);
+    var child = child_process.exec(cmd, {
+        //cwd: service_path,
+        env: {
+            X509_USER_PROXY: config.proxy,
             GLOBUS_TCP_PORT_RANGE: "20000,24999",
             GLOBUS_TCP_SOURCE_RANGE: "20000,24999",
-            timeout: 60*1000
-        }, //60 seconds timeout too short?
-        function(err, stdout, stderr) {
+        },
+        killSignal: 'SIGKILL',
+        timeout: 30*1000
+    }, function(err, stdout, stderr) {
         if(err) {
+            err.stdout = stdout;
+            err.stderr = stderr;
+            errors.push(err);
             console.error(err);
-            errors.push({sitename: sitename, msg:stderr, cmd: cmd, err:err});
-            fs.writeFile(service_path+"/ce_env.error", cmd+"\n"+stderr, next_service);
+            fs.writeFile(service_path+"/ce_env.error", err, next_service);
         } else {
             if(stderr != "") {
-                console.error(stderr)
-                errors.push({sitename: sitename, msg:stderr, cmd: cmd});
-                fs.writeFile(service_path+"/ce_env.error", stderr, next_service);
+                var out = {stdout: stdout, stderr: stderr, sitename: sitename};
+                errors.push(out);
+                fs.writeFile(service_path+"/ce_env.error", out, next_service);
+                console.error(out);
             } else {
                 //parse env output to json
                 var env = {};
@@ -102,6 +109,18 @@ function process_ce(sitename, fqdn, service_path, next_service) {
             }
         }
     });
+    /*
+    var timeout = setTimeout(function() {
+        console.log("timeout.. sending sigterm");
+        child.kill('SIGTERM');
+        timeout = null;
+    }, 10*1000);
+    */
+        /*
+        if(timeout !== null) {
+            console.log("canceling timeout");
+            clearTimeout(timeout);
+        }
+        */
 }
-
 

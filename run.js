@@ -2,8 +2,7 @@
 
 var config = require('./config.json');
 var fs = require("fs");
-var exec = require('child_process').exec;
-var spawn = require('child_process').spawn;
+var child_process = require('child_process');
 var assert = require('assert');
 
 var async = require("async");
@@ -49,6 +48,7 @@ get_directory(config.datadir, function(err, gridtype, next_gridtype) {
             var aliases = resource_info.FQDNAliases[0].FQDNAlias;
             //load_bdii(resource_path, resource_info.Name, next_resource);
             get_directory(resource_path, function(err, service, next_service) {
+                //console.log("dispatching: "+service);
                 switch(service) {
                 case "CE":
                     process_ce(group, fqdn, resource_path+"/"+service, next_service);
@@ -91,8 +91,12 @@ function process_ce(sitename, fqdn, service_path, next_service) {
     //load env.json
     var env_path = service_path+"/ce_env.json";
     fs.exists(env_path, function(exists) {
-        if(exists) {
+        if(!exists) {
+            console.log("ce_env.json doesn't exist.. "+service_path+" skipping");
+            next_service();
+        } else {
             var env = require(service_path+"/ce_env.json");
+            console.log(service_path+" "+env.OSG_HOSTNAME);
             /* -- a typical env from a site
             { _CONDOR_ANCESTOR_10544: '9999:1392204351:1296858486',
               _CONDOR_ANCESTOR_9999: '4386:1400788048:366421992',
@@ -129,7 +133,6 @@ function process_ce(sitename, fqdn, service_path, next_service) {
               LOGNAME: 'mis',
               OSG_SITE_READ: '/share/osg/data' }
             */
-            console.log(service_path+" "+env.OSG_HOSTNAME);
             /*
             exec(__dirname+"/ce/run.sh", {
                 timeout: 1000*60*5, //5 minutes enough?
@@ -154,32 +157,29 @@ function process_ce(sitename, fqdn, service_path, next_service) {
                 next_service();
             });
             */
-            var run = spawn(__dirname+'/ce/run.sh', [], {
-                timeout: 1000*60, //1 minutes enough?
+            console.log("running "+__dirname+'/ce/run.sh');
+            var run = child_process.exec(__dirname+'/ce/run.sh', {
+                //timeout: 1000*60, //1 minutes enough?
                 cwd: __dirname+"/ce",
                 env: {
-                    X509_USER_PROXY: "../"+config.proxy,
+                    X509_USER_PROXY: config.proxy,
                     GLOBUS_TCP_PORT_RANGE: "20000,24999",
                     GLOBUS_TCP_SOURCE_RANGE: "20000,24999",
                     SERVICE_PATH: service_path, //location where user should write output to
                     OSG_SITE_NAME: env.OSG_SITE_NAME,
                     OSG_HOSTNAME: env.OSG_HOSTNAME,
                     OSG_JOB_CONTACT: env.OSG_JOB_CONTACT
+                },
+                killSignal: 'SIGKILL',
+                timeout: 30*1000,
+            }, function(err, stdout, stderr) {
+                if(err) {
+                    console.error(err);
                 }
-            });
-            run.stdout.on('data', function(data) {
-              console.log(data.toString('utf8'));
-            });
-            run.stderr.on('data', function(data) {
-              console.error(data.toString('utf8'));
-            });
-            run.on('close', function (code) {
-                console.log('ce/run.sh ended with ' + code);
+                console.log(stdout);
+                console.error(stderr);
                 next_service();
             });
-        } else {
-            console.log("no ce_env.json for "+sitename+" ..skipping");
-            next_service();
         }
     });
 
@@ -200,25 +200,26 @@ function process_gridftp(sitename, fqdn, service_path, next_service) {
     if(fqdn.indexOf(":") == -1) {
         fqdn += ":2811";
     }
-    var run = spawn(__dirname+'/gridftp/run.sh', [], {
-        timeout: 1000*60, //1 minutes enough?
+
+    console.log("running "+__dirname+'/gridftp/run.sh');
+    var run = child_process.exec(__dirname+'/gridftp/run.sh', {
+        //timeout: 1000*60, //1 minutes enough?
         cwd: __dirname+"/gridftp",
         env: {
-            X509_USER_PROXY: "../"+config.proxy,
+            X509_USER_PROXY: config.proxy,
             GLOBUS_TCP_PORT_RANGE: "20000,24999",
             GLOBUS_TCP_SOURCE_RANGE: "20000,24999",
             SERVICE_PATH: service_path, //location where user should write output to
             GRIDFTP_FQDN: fqdn
+        },
+        killSignal: 'SIGKILL',
+        timeout: 30*1000,
+    }, function(err, stdout, stderr) {
+        if(err) {
+            console.error(err);
         }
-    });
-    run.stdout.on('data', function(data) {
-      console.log(data.toString('utf8'));
-    });
-    run.stderr.on('data', function(data) {
-      console.error(data.toString('utf8'));
-    });
-    run.on('close', function (code) {
-        console.log('gridftp/run.sh ended with ' + code + ' stored in '+service_path);
+        console.log(stdout);
+        console.error(stderr);
         next_service();
     });
 }
@@ -237,25 +238,26 @@ function process_srmv2(sitename, fqdn, service_path, next_service) {
         //fqdn += ":8443/srm/managerv2";
         fqdn += ":8443";
     }
-    var run = spawn(__dirname+'/srmv2/run.sh', [], {
-        timeout: 1000*60, //1 minutes enough?
+
+    console.log("running "+__dirname+'/srmv2/run.sh');
+    var run = child_process.exec(__dirname+'/srmv2/run.sh', {
+        //timeout: 1000*60, //1 minutes enough?
         cwd: __dirname+"/srmv2",
         env: {
-            //X509_USER_PROXY: "../"+config.proxy,
+            X509_USER_PROXY: config.proxy,
             GLOBUS_TCP_PORT_RANGE: "20000,24999",
             GLOBUS_TCP_SOURCE_RANGE: "20000,24999",
             SERVICE_PATH: service_path, //location where user should write output to
             SRMV2_FQDN: fqdn
+        },
+        killSignal: 'SIGKILL',
+        timeout: 30*1000,
+    }, function(err, stdout, stderr) {
+        if(err) {
+            console.error(err);
         }
-    });
-    run.stdout.on('data', function(data) {
-      console.log(data.toString('utf8'));
-    });
-    run.stderr.on('data', function(data) {
-      console.error(data.toString('utf8'));
-    });
-    run.on('close', function (code) {
-        console.log('srvmv2/run.sh on '+fqdn+' ended with ' + code + ' stored in '+service_path);
+        console.log(stdout);
+        console.error(stderr);
         next_service();
     });
 }
@@ -268,23 +270,24 @@ function process_perf(type, sitename, fqdn, service_path, next_service) {
         if(endpoint != '') fqdn = endpoint;
     }
 
-    var run = spawn(__dirname+'/perfsonar/test.js', [], {
-        timeout: 1000*60, //1 minutes enough?
+    console.log("running "+__dirname+'/perfsonar/test.js');
+    var run = child_process.exec(__dirname+'/perfsonar/test.js', {
+        //timeout: 1000*60, //1 minutes enough?
         cwd: __dirname+"/perfsonar",
         env: {
+            X509_USER_PROXY: config.proxy,
             SERVICE_PATH: service_path, //location where user should write output to
             ENDPOINT: fqdn, //location where user should write output to
             SERVICE_TYPE: type 
+        },
+        killSignal: 'SIGKILL',
+        timeout: 30*1000,
+    }, function(err, stdout, stderr) {
+        if(err) {
+            console.error(err);
         }
-    });
-    run.stdout.on('data', function(data) {
-      console.log(data.toString('utf8'));
-    });
-    run.stderr.on('data', function(data) {
-      console.error(data.toString('utf8'));
-    });
-    run.on('close', function (code) {
-        console.log('perfsonar/run.sh on '+fqdn+' ended with ' + code + ' stored in '+service_path);
+        console.log(stdout);
+        console.error(stderr);
         next_service();
     });
 }
