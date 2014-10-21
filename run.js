@@ -159,7 +159,6 @@ function process_ce(sitename, fqdn, service_path, next_service) {
             */
             console.log("running "+__dirname+'/ce/run.sh');
             var run = child_process.exec(__dirname+'/ce/run.sh', {
-                //timeout: 1000*60, //1 minutes enough?
                 cwd: __dirname+"/ce",
                 env: {
                     X509_USER_PROXY: config.proxy,
@@ -171,7 +170,7 @@ function process_ce(sitename, fqdn, service_path, next_service) {
                     OSG_JOB_CONTACT: env.OSG_JOB_CONTACT
                 },
                 killSignal: 'SIGKILL',
-                timeout: 30*1000,
+                timeout: 90*1000,
             }, function(err, stdout, stderr) {
                 if(err) {
                     console.error(err);
@@ -203,7 +202,6 @@ function process_gridftp(sitename, fqdn, service_path, next_service) {
 
     console.log("running "+__dirname+'/gridftp/run.sh');
     var run = child_process.exec(__dirname+'/gridftp/run.sh', {
-        //timeout: 1000*60, //1 minutes enough?
         cwd: __dirname+"/gridftp",
         env: {
             X509_USER_PROXY: config.proxy,
@@ -213,7 +211,7 @@ function process_gridftp(sitename, fqdn, service_path, next_service) {
             GRIDFTP_FQDN: fqdn
         },
         killSignal: 'SIGKILL',
-        timeout: 30*1000,
+        timeout: 90*1000,
     }, function(err, stdout, stderr) {
         if(err) {
             console.error(err);
@@ -241,7 +239,6 @@ function process_srmv2(sitename, fqdn, service_path, next_service) {
 
     console.log("running "+__dirname+'/srmv2/run.sh');
     var run = child_process.exec(__dirname+'/srmv2/run.sh', {
-        //timeout: 1000*60, //1 minutes enough?
         cwd: __dirname+"/srmv2",
         env: {
             X509_USER_PROXY: config.proxy,
@@ -251,7 +248,7 @@ function process_srmv2(sitename, fqdn, service_path, next_service) {
             SRMV2_FQDN: fqdn
         },
         killSignal: 'SIGKILL',
-        timeout: 30*1000,
+        timeout: 90*1000,
     }, function(err, stdout, stderr) {
         if(err) {
             console.error(err);
@@ -272,7 +269,6 @@ function process_perf(type, sitename, fqdn, service_path, next_service) {
 
     console.log("running "+__dirname+'/perfsonar/test.js');
     var run = child_process.exec(__dirname+'/perfsonar/test.js', {
-        //timeout: 1000*60, //1 minutes enough?
         cwd: __dirname+"/perfsonar",
         env: {
             X509_USER_PROXY: config.proxy,
@@ -281,7 +277,7 @@ function process_perf(type, sitename, fqdn, service_path, next_service) {
             SERVICE_TYPE: type 
         },
         killSignal: 'SIGKILL',
-        timeout: 30*1000,
+        timeout: 90*1000,
     }, function(err, stdout, stderr) {
         if(err) {
             console.error(err);
