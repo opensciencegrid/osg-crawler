@@ -4,7 +4,7 @@
 tar -cz \
     /var/lib/osg \
     /proc/cpuinfo \
-    /prob/meminfo \
+    /proc/meminfo \
     /etc/osg \
     /etc/grid-security/grid-mapfile \
     /etc/globus \
