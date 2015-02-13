@@ -3,6 +3,8 @@
 #list all files / directories that you'd like to pull from each CEs
 tar -cz \
     /var/lib/osg \
+    /proc/cpuinfo \
+    /prob/meminfo \
     /etc/osg \
     /etc/grid-security/grid-mapfile \
     /etc/globus \
