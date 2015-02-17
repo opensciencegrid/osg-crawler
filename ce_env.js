@@ -68,6 +68,9 @@ function process_ce(sitename, fqdn, service_path, next_service) {
         fqdn += ":2119";
     }
 
+    //remove previous ce_env.error
+    fs.unlinkSync(service_path+'/ce_env.error');
+
     //now submit env test
     var cmd = "globus-job-run "+fqdn+" /bin/env";
     console.log(cmd);

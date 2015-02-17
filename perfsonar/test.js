@@ -15,8 +15,9 @@ ps.ma.endpoint({server: endpoint, debug: false}, function(err, endpoints) {
         console.log("writing out :"+output_path+"/perfsonar.soap.endpoints.json"); 
         fs.writeFileSync(output_path+"/perfsonar.soap.endpoints.json", JSON.stringify(endpoints, null, 2));
 
-        console.log("testing REST endpoint: "+"http://"+endpoint+"/esmond/perfsonar/archive/?format=json");
-        http.get("http://"+endpoint+"/esmond/perfsonar/archive/?format=json", function(res) {
+        var url = "http://"+endpoint+"/toolkit/?format=json";
+        console.log("testing json: "+url);
+        http.get(url, function(res) {
             //console.dir(res);
             var body = "";
             res.on('data', function(chunk) {
@@ -32,7 +33,7 @@ ps.ma.endpoint({server: endpoint, debug: false}, function(err, endpoints) {
                 }
             });
         }).on('error', function(e) {
-            console.log("failed to access REST");
+            console.log("failed to access: "+url);
         });
     }
 });

@@ -26,20 +26,23 @@ then(function(groups) {
         process.exit(1);
         */
         function process_group(gridtype_path, group) {
-            var group_path=gridtype_path+"/"+group.GroupName[0];
+            var group_name = group.GroupName[0].replace("/","_");
+            var group_path=gridtype_path+"/"+group_name;
             fs.mkdir(group_path, function(e) {
                 if(!e || e.code === 'EEXIST') {
-
                     group.Resources[0].Resource.forEach(function(resource) {
                         console.log(resource.Name[0]);
                         //let's use resource name (instead of FQDN) for directory name
                         //since fqdn can be aliased, or overridden
-                        var resource_path=group_path+"/"+resource.Name[0];//+"_"+resource.FQDN[0];
+                        var resource_name = resource.Name[0].replace("/","_");
+                        var resource_path=group_path+"/"+resource_name;
                         fs.mkdir(resource_path, function(e) {
+                            //console.log("making directory:"+resource_path);
+                            //console.dir(e);
                             if(!e || e.code === 'EEXIST') {
                                 resource.Services[0].Service.forEach(function(service) {
-                                    //console.dir(service);
-                                    var service_path = resource_path+"/"+service.Name;
+                                    var service_name = service.Name[0].replace("/","_");
+                                    var service_path = resource_path+"/"+service_name;
                                     fs.mkdir(service_path, function(e) {
                                         if(!e || e.code === 'EEXIST') {
                                             //store service info

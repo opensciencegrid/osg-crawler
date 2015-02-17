@@ -14,6 +14,8 @@ cat /proc/meminfo
 
 echo "ls /cvmfs"
 ls /cvmfs
+echo "ls /cvmfs/oasis.opensciencegrid.org"
+ls /cvmfs/oasis.opensciencegrid.org
 
 echo "df"
 df
